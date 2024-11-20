@@ -1,0 +1,12 @@
+{{#if currentUser}}
+<script>window.location.href = '/current';</script>
+{{/if}}
+
+
+<h2>Iniciar sesion</h2>
+
+<form action="/api/user/login" id="loginForm" method="POST">
+    <input type="email" name="email" placeholder="Correo electronico" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    <button type="submit">Iniciar sesion</button>
+</form>

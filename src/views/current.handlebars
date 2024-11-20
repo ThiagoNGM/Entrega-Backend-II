@@ -1,0 +1,7 @@
+{{#if currentUser}}
+<h2>Bienvenido, {{currentUser.first_name}}</h2>
+<p>Tu rol es: {{currentUser.role}}</p>
+<a href="/login">Cerrar sesion</a>
+{{else}}
+<script>window.location.href = '/login'</script>
+{{/if}}
