@@ -51,7 +51,41 @@ export const roleAuthorization = (role) => {
 
 export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password);
+export const isValidPassword = (user, password) => {
+    console.log("Contraseña ingresada: ", password);
+    console.log("Hash en base de datos: ", user.password);
+
+    const isMatch = bcrypt.compareSync(password, user.password);
+    console.log("¿Las contraseñas coinciden?", isMatch);
+
+    return isMatch;
+};
+
+export const login = (req, res) => {
+    const { email, password } = req.body;
+
+    User.findOne({ email }, (err, user) => {
+        if (err || !user) {
+            return res.status(400).json({ error: 'Credenciales inválidas' });
+        }
+
+        if (!isValidPassword(user, password)) {
+            console.log('Contraseña ingresada:', password);
+            console.log('Contraseña en base de datos:', user.password);
+            return res.status(400).json({ error: 'Credenciales inválidas' });
+        }
+
+        const token = generateToken(user);
+        res.json({ message: 'Login exitoso', token });
+    });
+};
+
+export const generateNewHash = (password) => {
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) throw err;
+        console.log("Nuevo hash generado: ", hash);
+    });
+};
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);

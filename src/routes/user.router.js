@@ -4,7 +4,7 @@ import { authToken } from "../utils.js";
 const router = express.Router();
 
 router.get('/login', (req, res) => {
-    res.render('/login', { currentUser: req.cookies.currentUser })
+    res.render('login', { currentUser: req.cookies.currentUser })
 })
 
 router.get('/current', authToken, (req, res) => {

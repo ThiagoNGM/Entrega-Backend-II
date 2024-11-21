@@ -41,12 +41,12 @@ mongoose.connect(uriMongo)
 const PRIVATE_KEY = process.env.PRIVATEKEYJWT;
 
 app.use('/users', userRouter);
-app.use('/api/sesions', apiRouter);
+app.use('/api/user', apiRouter);
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-
-    if (email === req.body.email && password === req.body.password) {
+    console.log(req.body);
+    if (email === 'tngmaidub@gmail.com' && password === 12345) {
         let token = jwt.sign({ email, password, role: "user" }, firmacookie, { expiresIn: "24hr" });
         res.cookie('cookieToken', token, { maxAge: 60 * 60 * 1000, httpOnly: true }).send({ message: "sesión iniciada" });
     } else {

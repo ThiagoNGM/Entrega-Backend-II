@@ -16,23 +16,28 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const user = await UserService.findOne({ email: req.body.email })
+        const user = await UserService.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(400).json({ error: 'Credenciales invalidas' });
+            console.log('Usuario no encontrado'); // Depuración
+            return res.status(400).json({ error: 'Credenciales inválidas' });
         }
 
         if (!isValidPassword(user, req.body.password)) {
+            console.log('Contraseña incorrecta'); // Depuración
             return res.status(400).json({ error: 'Credenciales inválidas' });
         }
 
         const token = generateToken({ userId: user._id, role: user.role });
-        res.cookie('currentUser', token, { httpOnly: true })
-        res.json({ message: 'Inicio de sesion exitoso' });
+        res.cookie('currentUser', token, { httpOnly: true });
+        res.json({ message: 'Inicio de sesión exitoso' });
 
     } catch (error) {
+        console.error('Error en el login:', error); // Depuración
         res.status(500).json({ error: error.message });
     }
 });
+
+
 
 router.get('/current', authToken, (req, res) => {
     const user = req.user;
